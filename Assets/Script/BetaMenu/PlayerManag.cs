@@ -12,4 +12,7 @@ public class PlayerManag : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	void EuDouOCu(){
+	}
 }
