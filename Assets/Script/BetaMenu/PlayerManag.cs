@@ -13,6 +13,6 @@ public class PlayerManag : MonoBehaviour {
 	
 	}
 
-	void EuDouOCu(){
+	void EuDouOCuAlterado(){
 	}
 }
