@@ -3,34 +3,51 @@ using System.Collections;
 using UnityEngine.Networking;
 
 public class PlayerManag : NetworkBehaviour {
-	 public string PlayerName;
-	public string Player2Name;
+	[SyncVar] public string Player1Name;
+	[SyncVar] public string Player2Name;
 
-	// Use this for initialization
+	public static PlayerManag unico;
+
+	public PlayerManag(){
+		unico = this;
+	}
+	void Awake(){
+		if (isServer)
+			gameObject.name = "Player1";
+	}
+
 	void Start () {
-		PlayerName = GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text;
-		Debug.Log ("Testando" + PlayerName);
-		//SetNames ();
+		Debug.Log ("Started");
+		//Player1Name = GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text;
+		SetNames ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//SetNames ();
+		SetNames ();
 	}
+
+
 	public void SetNames(){
-		if (isLocalPlayer && ControleNetwork.unico.PlayerNumber == 1)
-			RpcPlayer1Name();
-		if (isLocalPlayer && ControleNetwork.unico.PlayerNumber == 2)
-			CmdPlayer2Name(PlayerName);
+		if (isServer) 		
+			CmdPlayer1Name (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
+		
+		else
+			CmdPlayer2Name (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
+			
+	
+	}
+	[Command] void CmdPlayer1Name(string playerN){
+		Player1Name = playerN;
+		RpcSetNames ();
 	}
 	[Command] void CmdPlayer2Name(string playerN){
 		Player2Name = playerN;
-		RpcPlayer2Name (Player2Name);
+		RpcSetNames ();
 	}
-	[ClientRpc] void RpcPlayer2Name(string playerN){
-		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Player2N.text = playerN;
+	[ClientRpc] void RpcSetNames(){
+		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Player2N.text = Player2Name;
+		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Player1N.text = Player1Name;
 	}
-	[ClientRpc] void RpcPlayer1Name(){
-		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Player1N.text = PlayerName;
-	}
+
 }

@@ -7,8 +7,6 @@ public class BetaMenuManager : MonoBehaviour {
 	string PlayerName = "Player";
 	string Player1Name;
 	string Player2Name;
-	public GameObject PlayerManager;
-
 
 
 
@@ -17,7 +15,6 @@ public class BetaMenuManager : MonoBehaviour {
 	public InputField IP;
 	public Text Player1N;
 	public Text Player2N;
-	[SerializeField] GameObject prefabPlayerManager;
 
 	//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	//Funções//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -25,8 +22,7 @@ public class BetaMenuManager : MonoBehaviour {
 		ControleNetwork.unico.IniciarServidor(16000);
 		Player1Name = PlayerName;
 		Player1N.text = Player1Name;
-		//PlayerManager = Instantiate (prefabPlayerManager);
-		//NetworkServer.Spawn (PlayerManager);
+
 
 	}
 	public void Join(){
