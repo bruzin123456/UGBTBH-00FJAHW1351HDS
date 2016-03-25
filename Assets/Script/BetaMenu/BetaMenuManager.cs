@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using UnityEngine.Networking;
 public class BetaMenuManager : MonoBehaviour {
-	private const string typeName = "MeuJoJo";
-	private const string gameName = "TesteBeta";
 	private string ip;
 	string PlayerName = "Player";
 	string Player1Name;
 	string Player2Name;
+	public GameObject PlayerManager;
 
 
 
@@ -18,17 +17,20 @@ public class BetaMenuManager : MonoBehaviour {
 	public InputField IP;
 	public Text Player1N;
 	public Text Player2N;
+	[SerializeField] GameObject prefabPlayerManager;
 
 	//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	//Funções//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public void Host() {
-		Network.InitializeServer(1, 16000, !Network.HavePublicAddress());
+		ControleNetwork.unico.IniciarServidor(16000);
 		Player1Name = PlayerName;
 		Player1N.text = Player1Name;
+		//PlayerManager = Instantiate (prefabPlayerManager);
+		//NetworkServer.Spawn (PlayerManager);
 
 	}
 	public void Join(){
-		Network.Connect (ip, 16000);
+		ControleNetwork.unico.ConectarServidor (ip, 16000);
 	}
 	// Set Var//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public void SetPlayerName (){
@@ -39,19 +41,10 @@ public class BetaMenuManager : MonoBehaviour {
 		ip = IP.text;
 		Debug.Log (ip);
 	}
-	void SetPlayer2Name (string name){
-		Player2Name = name;
-	}
-	void SetPlayer1Name (string name){
-		Player1Name = name;
-	}
+
 
 	//Chamadas Da Rede //
-	void OnServerInitialized()	{
-		Debug.Log("Server Initializied");
-	}
-	void OnPlayerConnected(NetworkPlayer player) {
-		Debug.Log(" connected from " + player.ipAddress + ":" + player.port);
-		Player2N.text = "Conectado";
+	public void OnStartHost(){
+		Debug.Log ("Teste");
 	}
 }
