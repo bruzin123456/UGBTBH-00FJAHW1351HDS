@@ -1,15 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
+[NetworkSettings(channel=1)]
+public class PlayerManag : NetworkBehaviour {
+	[SyncVar] public string PlayerName;
+	[SyncVar] public int PlayerNumber = 0;
 
-public class PlayerManag : MonoBehaviour {
 
-	// Use this for initialization
+
+
+
+
+
 	void Start () {
-	
+		if (isLocalPlayer){
+			CmdSetPlayerNumber (ControleNetwork.unico.PlayerNumber);
+			GetName ();
+		}
 	}
 	
-	// Update is called once per frame
+
 	void Update () {
-	
+		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().PlayerNField [PlayerNumber].text = PlayerName;
 	}
+
+	public void GetName(){
+		CmdSetName (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
+	}
+
+	// Funções Chamadas Na Rede... \\
+
+	[Command] void CmdSetPlayerNumber(int n){
+		PlayerNumber = n;
+	}
+
+	[Command] void CmdSetName(string playerN){
+		PlayerName = playerN;
+
+	}
+
 }
