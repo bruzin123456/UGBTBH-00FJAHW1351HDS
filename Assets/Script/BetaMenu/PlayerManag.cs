@@ -1,53 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
-
+[NetworkSettings(channel=1)]
 public class PlayerManag : NetworkBehaviour {
-	[SyncVar] public string Player1Name;
-	[SyncVar] public string Player2Name;
+	[SyncVar] public string PlayerName;
+	[SyncVar] public int PlayerNumber = 0;
 
-	public static PlayerManag unico;
 
-	public PlayerManag(){
-		unico = this;
-	}
-	void Awake(){
-		if (isServer)
-			gameObject.name = "Player1";
-	}
+
+
+
+
 
 	void Start () {
-		Debug.Log ("Started");
-		//Player1Name = GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text;
-		SetNames ();
+		if (isLocalPlayer){
+			CmdSetPlayerNumber (ControleNetwork.unico.PlayerNumber);
+			GetName ();
+		}
 	}
 	
-	// Update is called once per frame
+
 	void Update () {
-		SetNames ();
+		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().PlayerNField [PlayerNumber].text = PlayerName;
 	}
 
+	public void GetName(){
+		CmdSetName (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
+	}
 
-	public void SetNames(){
-		if (isServer) 		
-			CmdPlayer1Name (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
-		
-		else
-			CmdPlayer2Name (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
-			
-	
+	// Funções Chamadas Na Rede... \\
+
+	[Command] void CmdSetPlayerNumber(int n){
+		PlayerNumber = n;
 	}
-	[Command] void CmdPlayer1Name(string playerN){
-		Player1Name = playerN;
-		RpcSetNames ();
-	}
-	[Command] void CmdPlayer2Name(string playerN){
-		Player2Name = playerN;
-		RpcSetNames ();
-	}
-	[ClientRpc] void RpcSetNames(){
-		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Player2N.text = Player2Name;
-		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Player1N.text = Player1Name;
+
+	[Command] void CmdSetName(string playerN){
+		PlayerName = playerN;
+
 	}
 
 }

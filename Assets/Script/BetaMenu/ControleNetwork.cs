@@ -5,19 +5,18 @@ using UnityEngine.Networking;
 public class ControleNetwork : NetworkManager {
 	public static ControleNetwork unico;
 	public int PlayerNumber;
-	public GameObject playermanager;
 
 	public ControleNetwork(){
 		unico = this;
 	}
 	
 	public void IniciarServidor (int port){
-		PlayerNumber = 1;
+		PlayerNumber = 0;
 		networkPort = port;
 		StartHost ();
 	}
 	public void ConectarServidor(string ip, int port){
-		PlayerNumber = 2;
+		PlayerNumber = 1;
 		networkAddress = ip;
 		networkPort = port;
 		StartClient ();
@@ -33,14 +32,9 @@ public class ControleNetwork : NetworkManager {
 	public override void OnServerConnect(NetworkConnection conn){
 		Debug.Log ("ConectadoJogador: "+conn.address);
 		if (conn.address == "localServer") {
-			playermanager = Instantiate (playermanager);
-			NetworkServer.Spawn (playermanager);
+			//PlayerManag.Player [0].GetName();
 		}
-			if (conn.address != "localServer" && conn.address != "localClient") {
-				Debug.Log ("Set Authority");
-				PlayerManag.unico.gameObject.GetComponent<NetworkIdentity> ().AssignClientAuthority (conn);
-			}
-				
+	
 
 		
 	}
