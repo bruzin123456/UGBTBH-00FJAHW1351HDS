@@ -35,10 +35,6 @@ public class ControleNetwork : NetworkLobbyManager {
 	}
 	public override void OnLobbyServerConnect(NetworkConnection conn){
 		Debug.Log ("ConectadoJogador: "+conn.address);
-	
-	
-
-		
 	}
 
 
