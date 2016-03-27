@@ -22,6 +22,10 @@ public class ControleNetwork : NetworkLobbyManager {
 		StartClient ();
 	}
 
+	public string GetSceneName(){
+		return networkSceneName;
+	}
+
 
 
 	// Call Backs \\\\\\\\\\\\\\\\\\\\\
@@ -31,9 +35,7 @@ public class ControleNetwork : NetworkLobbyManager {
 	}
 	public override void OnLobbyServerConnect(NetworkConnection conn){
 		Debug.Log ("ConectadoJogador: "+conn.address);
-		if (conn.address == "localServer") {
-			//PlayerManag.Player [0].GetName();
-		}
+	
 	
 
 		
