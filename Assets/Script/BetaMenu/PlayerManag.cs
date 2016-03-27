@@ -1,42 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
-[NetworkSettings(channel=1)]
-public class PlayerManag : NetworkBehaviour {
+[NetworkSettings(channel=0)]
+public class PlayerManag : NetworkLobbyPlayer {
 	[SyncVar] public string PlayerName;
-	[SyncVar] public int PlayerNumber = 0;
-
-
-
-
-
-
-
-	void Start () {
-		if (isLocalPlayer){
-			CmdSetPlayerNumber (ControleNetwork.unico.PlayerNumber);
-			GetName ();
+	void Start(){
+		if (isLocalPlayer && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MenuBetaTeste" ) {
+			CmdSetName (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
 		}
 	}
-	
-
 	void Update () {
-		GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().PlayerNField [PlayerNumber].text = PlayerName;
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MenuBetaTeste") {
+			GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().PlayerNField [slot].text = PlayerName;
+		}
 	}
 
-	public void GetName(){
-		CmdSetName (GameObject.Find ("Main Camera").GetComponent<BetaMenuManager> ().Name.text);
-	}
 
+	// CallBacks lobbyPlayer \\
+	public override void OnClientEnterLobby() {
+		
+	}
 	// Funções Chamadas Na Rede... \\
-
-	[Command] void CmdSetPlayerNumber(int n){
-		PlayerNumber = n;
-	}
 
 	[Command] void CmdSetName(string playerN){
 		PlayerName = playerN;
-
 	}
-
 }

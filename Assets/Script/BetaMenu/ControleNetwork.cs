@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class ControleNetwork : NetworkManager {
+public class ControleNetwork : NetworkLobbyManager {
 	public static ControleNetwork unico;
 	public int PlayerNumber;
 
@@ -22,18 +22,20 @@ public class ControleNetwork : NetworkManager {
 		StartClient ();
 	}
 
+	public string GetSceneName(){
+		return networkSceneName;
+	}
+
 
 
 	// Call Backs \\\\\\\\\\\\\\\\\\\\\
-	public override void OnStartHost(){
+	public override void OnLobbyStartHost(){
 		Debug.Log ("ServidorIniciado");
 
 	}
-	public override void OnServerConnect(NetworkConnection conn){
+	public override void OnLobbyServerConnect(NetworkConnection conn){
 		Debug.Log ("ConectadoJogador: "+conn.address);
-		if (conn.address == "localServer") {
-			//PlayerManag.Player [0].GetName();
-		}
+	
 	
 
 		
