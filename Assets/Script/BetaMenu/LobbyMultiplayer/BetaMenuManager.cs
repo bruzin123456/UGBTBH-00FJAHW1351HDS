@@ -10,7 +10,6 @@ public class BetaMenuManager : MonoBehaviour {
 
 	// Pegar do Editor//
 	public Text[] PlayerNField = new Text [2];
-	public InputField Name;
 	public InputField IP;
 
 

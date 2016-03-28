@@ -9,7 +9,7 @@ public class PlayerManag : NetworkLobbyPlayer {
 
 	void Start(){
 		if (isLocalPlayer && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MenuBetaTeste" ) {
-			CmdSetName (BetaMenuManager.unico.Name.text);
+			CmdSetName (Perfil.PlayerName);
 		}
 	}
 	void Update () {
