@@ -15,4 +15,10 @@ public class MainMenu : MonoBehaviour {
 		SceneManager.LoadScene ("Opções", LoadSceneMode.Additive);
 		SceneManager.UnloadScene("MainMenu");
 	}
+
+	public void Perfil(){
+		SceneManager.LoadScene ("Perfil", LoadSceneMode.Additive);
+		SceneManager.UnloadScene("MainMenu");
+
+	}
 }
