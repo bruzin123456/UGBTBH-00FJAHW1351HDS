@@ -5,7 +5,9 @@ using UnityEngine.Networking;
 public class PlayerManag : NetworkLobbyPlayer {
 	[SyncVar] public string PlayerName;
 
-
+	void Awake(){
+		DontDestroyOnLoad (transform.gameObject);
+	}
 
 	void Start(){
 		if (isLocalPlayer && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MenuBetaTeste" ) {
@@ -16,7 +18,9 @@ public class PlayerManag : NetworkLobbyPlayer {
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MenuBetaTeste") {
 			BetaMenuManager.unico.PlayerNField [slot].text = PlayerName;
 		}
+
 	}
+		
 
 	// Funções Chamadas Na Rede... \\
 
