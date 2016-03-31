@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
-
 public class ControleNetwork : NetworkLobbyManager {
 	public static ControleNetwork unico;
-	public int PlayerNumber;
+	public int PlayerNumber = 10;
 
 	public ControleNetwork(){
 		unico = this;
@@ -36,6 +35,10 @@ public class ControleNetwork : NetworkLobbyManager {
 	public override void OnLobbyServerConnect(NetworkConnection conn){
 		Debug.Log ("ConectadoJogador: "+conn.address);
 	}
-
+	public override void OnLobbyClientConnect(NetworkConnection conn) {
+		BetaMenuManager.unico.HideJoinHost ();
+	}
+		
+		
 
 }
