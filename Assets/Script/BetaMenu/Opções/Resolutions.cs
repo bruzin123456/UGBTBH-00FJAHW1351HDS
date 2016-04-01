@@ -18,6 +18,7 @@ public class Resolutions : MonoBehaviour {
 		for (int i = 0; i < resolutions.Length; i++) {
 			if (resolutions [i].width == Screen.width && resolutions [i].height == Screen.height)
 				ResolutionDrop.value = i;
+			Perfil.Resolution = i;
 		}
 
 
@@ -27,6 +28,8 @@ public class Resolutions : MonoBehaviour {
 		if (ResolutionDrop.value != Perfil.Resolution) {
 			Perfil.Resolution = ResolutionDrop.value;
 			Screen.SetResolution (resolutions [ResolutionDrop.value].width, resolutions [ResolutionDrop.value].height, Screen.fullScreen);
+
+			Debug.Log (resolutions [ResolutionDrop.value].width + "X" + resolutions [ResolutionDrop.value].height);
 		}
 	}
 	}
