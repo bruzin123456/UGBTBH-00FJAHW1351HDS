@@ -4,7 +4,7 @@ using System.Collections;
 public static class Perfil{
 
 	//Dados Do Jogador \\
-	public static string PlayerName = "UnnamedPlayer";
+	public static string PlayerName = "Unnamed Player";
 	public static int MinutesPlayed;
 	public static int Progress;
 
