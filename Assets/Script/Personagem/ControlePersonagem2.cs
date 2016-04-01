@@ -21,6 +21,8 @@ public class ControlePersonagem2 : NetworkBehaviour {
 			if (Input.GetAxisRaw ("Horizontal") > 0) {
 				transform.Translate (Vector2.right * velocidade * Time.deltaTime);
 				transform.eulerAngles = new Vector2 (0, 0);
+
+
 				//Pega a Posição do personagem e envia para o server (host)
 				CmdSetPos (transform.position);
 			}
