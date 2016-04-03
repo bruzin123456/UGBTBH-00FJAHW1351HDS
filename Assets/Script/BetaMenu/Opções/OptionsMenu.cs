@@ -25,24 +25,30 @@ public class OptionsMenu : MonoBehaviour {
 
 	public void ChangeLanguage(){
 		Perfil.language = language.value;
+		SetLanguague ();
 	}
 
 	void SetLanguague(){
+		////////////////////////////////////////////////
+		BaseMenuText languageT;
 		if (Perfil.language == 1) {
-			BaseMenuText languageT = new PortugueseMenuText();
-			mainMenu.text = languageT.returnToMenu;
-			apply.text = languageT.apply;
-			resolution.text = languageT.screenResolution;
-			fullScreen.text = languageT.screenMode;
-			screenMode.options [0].text = languageT.fullScreen;
-			screenMode.options [1].text = languageT.window;
-			screenMode.value = 0;
-			screenMode.value = 1;
-			if (Screen.fullScreen == true)
-				screenMode.value = 0;
-			else
-				screenMode.value = 1;
+			languageT = new PortugueseMenuText ();
+		} else{
+			languageT = new EnglishMenuText ();
 		}
+		///////////////////////////////////////////////
+		mainMenu.text = languageT.returnToMenu;
+		apply.text = languageT.apply;
+		resolution.text = languageT.screenResolution;
+		fullScreen.text = languageT.screenMode;
+		screenMode.options [0].text = languageT.fullScreen;
+		screenMode.options [1].text = languageT.window;
+		screenMode.value = 0;
+		screenMode.value = 1;
+		if (Screen.fullScreen == true)
+			screenMode.value = 0;
+		else
+			screenMode.value = 1;
 	}
 
 

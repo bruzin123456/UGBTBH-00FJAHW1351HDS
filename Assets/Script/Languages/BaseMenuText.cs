@@ -23,7 +23,6 @@ public class BaseMenuText {
 	public string confirm;
 	public string cancel;
 	public string returnn;
-
 	}
 
 public class PortugueseMenuText :  BaseMenuText{
@@ -50,7 +49,30 @@ public class PortugueseMenuText :  BaseMenuText{
 		cancel = "Cancelar";
 		returnn = "Voltar";
 	}
-
-
+}
+public class EnglishMenuText :  BaseMenuText{
+	public EnglishMenuText(){
+		profile = "Profile";
+		options = "Options";
+		quitgame = "Leave Game";
+		screenResolution = "Screen Resolution:";
+		screenMode = "Screen Mode:";
+		apply = "Apply";
+		name = "Name:";
+		timePlayed = "Time Played:";
+		Progress = "Progress:";
+		change = "Change";
+		returnToMenu = "To Main Menu";
+		join = "Join";
+		host = "Host";
+		startGame = "Sart Game";
+		disconnect = "Desconnect";
+		window = "Windown";
+		fullScreen = "Fullscreen";
+		save = "Save";
+		confirm = "Confirm";
+		cancel = "Cancel";
+		returnn = "Return";
+	}
 }
 
