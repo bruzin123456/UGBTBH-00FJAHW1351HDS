@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 public class ControlePersonagem2 : NetworkBehaviour {
 
 	private float velocidade = 5;
+	[SyncVar] private bool contatoterrain;
+	float fPulo = 300;
+	[SyncVar] public Transform Verificaterrain;
 	[SyncVar] Vector2 pos = new Vector2(0,0);
 
 	// Use this for initialization
@@ -17,11 +20,13 @@ public class ControlePersonagem2 : NetworkBehaviour {
 	void Movimentacao() {
 			// Ve se você tem autoridade sobre o personagem para movelo
 		if (hasAuthority == true) {
+
+			// atribui o valor do Verificaterrain esta encostado em 1 layer com o nome de terrain
+			contatoterrain = Physics2D.Linecast(transform.position, Verificaterrain.position, 1 << LayerMask.NameToLayer("terrain"));
 			//Anda para a direita
 			if (Input.GetAxisRaw ("Horizontal") > 0) {
 				transform.Translate (Vector2.right * velocidade * Time.deltaTime);
 				transform.eulerAngles = new Vector2 (0, 0);
-
 
 				//Pega a Posição do personagem e envia para o server (host)
 				CmdSetPos (transform.position);
@@ -31,6 +36,13 @@ public class ControlePersonagem2 : NetworkBehaviour {
 			if (Input.GetAxisRaw ("Horizontal") < 0) {
 				transform.Translate (Vector2.right * velocidade * Time.deltaTime);
 				transform.eulerAngles = new Vector2 (0, 180);
+				//Pega a Posição do personagem e envia para o server (host)
+				CmdSetPos (transform.position);
+			}
+
+			//Pular
+			if (Input.GetButtonDown("Jump") && contatoterrain) {
+				GetComponent<Rigidbody2D>().AddForce(transform.up * fPulo);
 				//Pega a Posição do personagem e envia para o server (host)
 				CmdSetPos (transform.position);
 			}
