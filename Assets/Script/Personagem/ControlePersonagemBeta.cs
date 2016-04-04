@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
 [NetworkSettings(channel=1,sendInterval=0f)]
