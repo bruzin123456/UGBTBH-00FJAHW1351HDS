@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class ControlePersonagem2 : NetworkBehaviour {
 
 	private float velocidade = 5;
-	[SyncVar] private bool contatoterrain;
+	[SyncVar] bool contatoterrain;
 	float fPulo = 300;
 	[SyncVar] public Transform Verificaterrain;
 	[SyncVar] Vector2 pos = new Vector2(0,0);
@@ -77,6 +77,7 @@ public class ControlePersonagem2 : NetworkBehaviour {
 		RpcSpawnPos (posicao);
 		Paused = false;
 	}
+
 	[ClientRpc(channel = 0)] void RpcSpawnPos(Vector2 position){
 		gameObject.transform.position = new Vector3 (position.x, position.y, gameObject.transform.position.z);
 	}
