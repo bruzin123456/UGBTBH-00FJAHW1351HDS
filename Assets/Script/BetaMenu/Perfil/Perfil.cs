@@ -7,7 +7,7 @@ public static class Perfil{
 	public static string PlayerName = "Unnamed Player";
 	public static int MinutesPlayed;
 	public static int Progress;
-
+	public static int language = 1;      // 0 - english , 1 - Portuguese
 
 
 
