@@ -14,8 +14,6 @@ public class ControlePersonagem2 : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if (isServer) 
-			SpawnPoint ();	
 	}
 		
 	//Movimentação!!
@@ -65,20 +63,9 @@ public class ControlePersonagem2 : NetworkBehaviour {
 
 
 	/// Spawn Position \\\
-	void SpawnPoint(){
-		Vector2 posicao;
-		if (gameObject.name == "Player1") {
-			posicao = GameObject.Find ("SpawnP1").transform.position;		
-		} else {
-			posicao = GameObject.Find ("SpawnP2").transform.position;
-		}
-		pos = posicao;
-		gameObject.transform.position = new Vector3 (posicao.x, posicao.y, gameObject.transform.position.z);
-		RpcSpawnPos (posicao);
-		Paused = false;
-	}
 
-	[ClientRpc(channel = 0)] void RpcSpawnPos(Vector2 position){
+
+	[ClientRpc(channel = 1)] void RpcSpawnPos(Vector2 position){
 		gameObject.transform.position = new Vector3 (position.x, position.y, gameObject.transform.position.z);
 	}
 }
