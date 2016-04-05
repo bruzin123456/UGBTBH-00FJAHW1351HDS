@@ -1,65 +1,73 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
-[NetworkSettings(channel=1,sendInterval=0f)]
 
-public class ControlePersonagem2 : NetworkBehaviour {
-
-	float vel = 5f;
-	bool contatoterrain;
-	float fPulo = 50;
+[NetworkSettings(channel=1,sendInterval=0.1f)]
+public class ControlePersonagem2 : ControleBase {
+	private Rigidbody2D rig2d;
 	public Transform Verificaterrain;
-	[SyncVar] public Vector2 pos;
-	[SyncVar] public bool Paused = true;
+	private float vel = 5f;
+	private float fPulo = 1000f;
+	public bool contatoterrain;
+	public bool FacingRightLocal = true;
+
+	[SyncVar] bool FacingRightServer = true;
 
 	void Start () {
+		lerpint = 0.6f;
+		rig2d = gameObject.GetComponent<Rigidbody2D> ();
 	}
 	
 	// Update é chamado frame por frame
-	void Update () {
-			Movimentacao();
+	void Update(){
+		FacingSide (); // Vira o Boneco para o lado certo...
+		if (hasAuthority == true)
+			Pulo(); // Pula
+		
+	}
+	void FixedUpdate () {
+		if (hasAuthority == true) // Ve se você tem autoridade sobre o personagem para movelo
+			Movimentacao ();  // Verifica Input e Mover Personagem
+		else
+			InterpRefresh ();  // Atualiza para a posição que o servidor enviar
 	}
 
 	//Movimentação!!
 	void Movimentacao() {
-		
-			// Ve se você tem autoridade sobre o personagem para movelo
-			if (hasAuthority == true) {
-				//Pega a Posição do personagem e envia para o server (host)
-				CmdSetPos (transform.position);
-
-				// atribui o valor do Verificaterrain esta encostado em 1 layer com o nome de terrain
-				contatoterrain = Physics2D.Linecast (transform.position, Verificaterrain.position, 1 << LayerMask.NameToLayer ("terrain"));
-				//Anda para a direita
-				if (Input.GetAxisRaw ("Horizontal") > 0) {
-				transform.Translate (Vector2.right * vel * Time.deltaTime);
-					transform.eulerAngles = new Vector2 (0, 0);
+				//  Anda 
+			Vector2 AxisInput = new Vector2(Input.GetAxis ("Horizontal"),0);
+			if (AxisInput != Vector2.zero) {
+				rig2d.position += (AxisInput * vel * Time.fixedDeltaTime);
+			if (AxisInput.x > 0)   ////// Atribui a direção que o boneco está virado
+				FacingRightLocal = true;
+			else
+				FacingRightLocal = false;
 				}
-
-				//Anda para a esquerda
-				if (Input.GetAxisRaw ("Horizontal") < 0) {
-				transform.Translate (Vector2.right * vel * Time.deltaTime);
-					transform.eulerAngles = new Vector2 (0, 180);
-				}
-
-				//Pular
-			if (Input.GetButtonDown ("Jump") && contatoterrain) {
-					GetComponent<Rigidbody2D> ().AddForce (transform.up * fPulo);
-				}
-					
-			} else {
-				// Não sei!
-				gameObject.transform.position = new Vector3 (pos.x, pos.y, gameObject.transform.position.z);
-			}
+			//Pega a Posição do personagem e envia para o server (host)
+			CmdSetPos (rig2d.position);
 		}
-	
 
-	[Command] void CmdSetPos(Vector2 position){
-		pos = position;
+	void Pulo(){
+		contatoterrain = Physics2D.Linecast (transform.position, Verificaterrain.position, 1 << LayerMask.NameToLayer ("terrain"));
+		if (Input.GetButtonDown ("Jump") && contatoterrain) {
+			rig2d.AddForce (Vector2.up * fPulo);
+		}
 	}
-		
-	/// Spawn Position \\\
-	[ClientRpc(channel = 1)] public void RpcSpawnPos(Vector2 position){
-		gameObject.transform.position = new Vector3 (position.x, position.y, gameObject.transform.position.z);
+
+	void FacingSide(){
+		if (hasAuthority == true) {
+			if (FacingRightServer != FacingRightLocal)
+				CmdSetFacing (FacingRightLocal);
+		} else
+			FacingRightLocal = FacingRightServer;
+		//////////////////////////////////////////////////////
+		if (FacingRightLocal == true)
+			transform.eulerAngles = new Vector2 (0,0);
+		else transform.eulerAngles = new Vector2 (0,180);
+
+	}
+
+	[Command(channel = 0)] void CmdSetFacing(bool facingright){
+		FacingRightServer = facingright;
 	}
 }

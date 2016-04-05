@@ -26,7 +26,7 @@ public class GamePlayerManager : NetworkBehaviour {
 
 	// Teste Spawn Point
 	void SpawnPoint(GameObject objetop){
-		ControlePersonagemBeta controle = objetop.GetComponent<ControlePersonagemBeta> ();
+		ControleBase controle = objetop.GetComponent<ControleBase> ();
 		Vector2 posicao;
 		////////////////////
 		if (objetop.name == "Player1") {
