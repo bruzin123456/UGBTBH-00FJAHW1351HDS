@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public class ControlePersonagemBeta : NetworkBehaviour {
     float lerpint = 0.4f;
 	float vel = 5f;
-	[SyncVar]public Vector2 pos;
+	[SyncVar] public Vector2 pos;
 	[SyncVar] public bool Paused = true;
 
 
