@@ -4,10 +4,13 @@ using UnityEngine.Networking;
 
 public class GamePlayerManager : NetworkBehaviour {
 	public GameObject FadaTeste;
+	public GameObject ArmaduraTeste;
+
+	public bool armadura;
 	// Use this for initialization
 	void Start () {
 		if (hasAuthority) {
-			CmdSpawnCharacter (ControleNetwork.unico.PlayerNumber);
+			CmdSpawnCharacter (ControleNetwork.PlayerNumber);
 		}
 	
 	}
@@ -17,7 +20,20 @@ public class GamePlayerManager : NetworkBehaviour {
 	
 	}
 	[Command] void CmdSpawnCharacter(int playnumb){
-		GameObject objeto = Instantiate (FadaTeste);
+		GameObject objeto;
+		PlayerManag jogador;
+		/////////// Verifica Qual o Player Manager deste Objeto \\\\\
+		if (hasAuthority)
+			jogador = ControleNetwork.meuPlayerManag;
+		else
+			jogador = ControleNetwork.parceiroPlayerManag;
+		/////////////// Pega a bool armadura para verificar oq ele vai spawna \\\\\\\\\
+		if (jogador.armadura)
+			objeto = ArmaduraTeste;
+		else
+			objeto = FadaTeste;
+		/////////////////Spawna o Jogador e Seta a posição Para o Spawn Position \\\\\\\\\
+		objeto = Instantiate (objeto);
 		objeto.name = ("Player" + (playnumb + 1));
 		NetworkServer.SpawnWithClientAuthority (objeto, gameObject);
 		SpawnPoint (objeto);

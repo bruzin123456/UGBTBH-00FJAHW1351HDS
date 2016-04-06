@@ -16,6 +16,7 @@ public class ControlePersonagem2 : ControleBase {
 	void Start () {
 		lerpint = 0.6f;
 		rig2d = gameObject.GetComponent<Rigidbody2D> ();
+		SetControleNetworkJogadores ();   ///// guarda a referencia desse objeto para o ControleNetwork
 	}
 	
 	// Update é chamado frame por frame

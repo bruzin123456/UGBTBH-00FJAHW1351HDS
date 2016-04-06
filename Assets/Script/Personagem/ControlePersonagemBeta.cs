@@ -9,6 +9,7 @@ public class ControlePersonagemBeta : ControleBase {
 
 	void Start () {
 		lerpint = 0.4f;
+		SetControleNetworkJogadores ();   ///// guarda a referencia desse objeto para o ControleNetwork
 	}
 
 	void FixedUpdate(){

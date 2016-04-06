@@ -28,7 +28,7 @@ public class BetaMenuManager : MonoBehaviour {
 	}
 
 	void Update(){
-		if (ControleNetwork.unico.PlayerNumber == 0 && ControleNetwork.unico.numPlayers == ControleNetwork.unico.maxPlayers) 	startGameButton.SetActive (true);
+		if (ControleNetwork.PlayerNumber == 0 && ControleNetwork.unico.numPlayers == ControleNetwork.unico.maxPlayers) 	startGameButton.SetActive (true);
 		else startGameButton.SetActive (false);
 	}
 	//Funções//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -51,11 +51,11 @@ public class BetaMenuManager : MonoBehaviour {
 	}
 
 	public void Disconnect(){
-		if (ControleNetwork.unico.PlayerNumber == 1) {
+		if (ControleNetwork.PlayerNumber == 1) {
 			ControleNetwork.unico.StopClient();
 		
 		}
-		if (ControleNetwork.unico.PlayerNumber == 0) {
+		if (ControleNetwork.PlayerNumber == 0) {
 			ControleNetwork.unico.StopHost();
 		
 		}

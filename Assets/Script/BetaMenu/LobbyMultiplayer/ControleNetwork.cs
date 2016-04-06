@@ -3,7 +3,11 @@ using System.Collections;
 using UnityEngine.Networking;
 public class ControleNetwork : NetworkLobbyManager {
 	public static ControleNetwork unico;
-	public int PlayerNumber = 10;
+	public static PlayerManag meuPlayerManag;
+	public static PlayerManag parceiroPlayerManag;
+	public static GamePlayerManager meuGamePlayerManag;
+	public static GameObject[] Jogadores = new GameObject[2];
+	public static int PlayerNumber = 10;
 
 	public ControleNetwork(){
 		unico = this;
@@ -37,6 +41,15 @@ public class ControleNetwork : NetworkLobbyManager {
 	}
 	public override void OnLobbyClientConnect(NetworkConnection conn) {
 		BetaMenuManager.unico.HideJoinHost ();
+	}
+
+	///////////////////////////// Funções Auxiliares \\\\\\\\\\\\\\\\\\\\\\
+
+	public static int OtherPlayerNumber(){
+		if (PlayerNumber == 1)
+			return 0;
+		else
+			return 1;
 	}
 		
 		
