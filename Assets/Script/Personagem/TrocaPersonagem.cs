@@ -4,18 +4,19 @@ using UnityEngine.Networking;
 
 [NetworkSettings(channel = 0, sendInterval = 0.1f)]
 public class TrocaPersonagem : NetworkBehaviour {
-	[SyncVar] bool Trocar;
+	[SyncVar] bool Trocar=false;
 	public GameObject balaoP;
 	private GameObject balao;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
 
-	// Update is called once per frame
+	void OnDestroy(){
+		if (balao != null)
+			Destroy (balao);
+	}
+		
 	void Update () {
 		if (hasAuthority) {
+			// Pega Comando e Decide Ação \\
 			if (Input.GetButtonDown ("SwitchPlayer")) {
 				if (balao == null) {
 					balao = Instantiate (balaoP);
@@ -25,6 +26,15 @@ public class TrocaPersonagem : NetworkBehaviour {
 					Destroy (balao);
 				}
 			}
+				// Verifica Se Ambos querem trocar \\
+			if (isServer) { 
+				if (Trocar && ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()].GetComponent<TrocaPersonagem> ().Trocar) {
+					Trocar = false;
+					foreach (GamePlayerManager jogadorManager in ControleNetwork.JogadoresGamePlayerManag)
+						jogadorManager.SwapCharacter ();				
+				}
+			}
+			////// Fim Authority \\\\\\\\\\\\\\\
 		} else {
 			if (Trocar && balao == null)
 				balao = Instantiate (balaoP);

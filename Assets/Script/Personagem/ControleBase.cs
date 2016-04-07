@@ -26,10 +26,13 @@ public class ControleBase : NetworkBehaviour {
 	}
 
 	protected void SetControleNetworkJogadores(){
-		if (hasAuthority)
+		if (hasAuthority) {
 			ControleNetwork.Jogadores [ControleNetwork.PlayerNumber] = gameObject;
-		else
+			Debug.Log ("Slot:" + ControleNetwork.PlayerNumber);
+		} else {
 			ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()] = gameObject;
+			Debug.Log ("Slot:" + ControleNetwork.OtherPlayerNumber ());
+		}
 	}
 }
 

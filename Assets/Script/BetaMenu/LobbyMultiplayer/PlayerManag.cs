@@ -11,16 +11,17 @@ public class PlayerManag : NetworkLobbyPlayer {
 
 	void Start(){
 		//////// Marca como o seu Player Manager ou o do parceiro
-		if (hasAuthority)
-			ControleNetwork.meuPlayerManag = this;
-		else
-			ControleNetwork.parceiroPlayerManag = this;
+		if (hasAuthority) 
+			ControleNetwork.JogadoresPlayerManag[ControleNetwork.PlayerNumber] = this;
+		else 
+			ControleNetwork.JogadoresPlayerManag[ControleNetwork.OtherPlayerNumber()] = this;
+	
 		/////// Set Para Fada ou Armadura
 		if (isServer) {
 			if (hasAuthority)
 				armadura = true;
 			else
-				armadura = !ControleNetwork.meuPlayerManag.armadura;
+				armadura = !ControleNetwork.JogadoresPlayerManag[ControleNetwork.PlayerNumber].armadura;
 		}
 		////////// Pega Nome Do Jogaador
 		if (isLocalPlayer && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MenuBetaTeste" ) {
@@ -31,7 +32,7 @@ public class PlayerManag : NetworkLobbyPlayer {
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MenuBetaTeste") {
 			BetaMenuManager.unico.PlayerNField [slot].text = PlayerName;
 		}
-
+			
 	}
 		
 

@@ -3,9 +3,8 @@ using System.Collections;
 using UnityEngine.Networking;
 public class ControleNetwork : NetworkLobbyManager {
 	public static ControleNetwork unico;
-	public static PlayerManag meuPlayerManag;
-	public static PlayerManag parceiroPlayerManag;
-	public static GamePlayerManager meuGamePlayerManag;
+	public static PlayerManag[] JogadoresPlayerManag = new PlayerManag[2];
+	public static GamePlayerManager[] JogadoresGamePlayerManag = new GamePlayerManager[2]; 
 	public static GameObject[] Jogadores = new GameObject[2];
 	public static int PlayerNumber = 10;
 
@@ -44,12 +43,21 @@ public class ControleNetwork : NetworkLobbyManager {
 	}
 
 	///////////////////////////// Funções Auxiliares \\\\\\\\\\\\\\\\\\\\\\
-
+	/// 
+	/// 
+	//////////////// Numero Do Jogador do Jogador que não é voce \\\\\\\\
 	public static int OtherPlayerNumber(){
-		if (PlayerNumber == 1)
+		if (ControleNetwork.PlayerNumber == 1)
 			return 0;
 		else
 			return 1;
+	}
+	// //      Numer do jogador Associado ao objeto \\\\\\\\\
+	public static int PlayerNumberThisObject(bool authority){
+		if (authority)
+			return PlayerNumber;
+		else
+			return OtherPlayerNumber ();
 	}
 		
 		

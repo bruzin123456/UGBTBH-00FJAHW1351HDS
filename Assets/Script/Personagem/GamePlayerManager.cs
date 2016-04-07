@@ -6,11 +6,13 @@ public class GamePlayerManager : NetworkBehaviour {
 	public GameObject FadaTeste;
 	public GameObject ArmaduraTeste;
 
-	public bool armadura;
 	// Use this for initialization
 	void Start () {
 		if (hasAuthority) {
-			CmdSpawnCharacter (ControleNetwork.PlayerNumber);
+			ControleNetwork.JogadoresGamePlayerManag [ControleNetwork.PlayerNumber] = this;
+			CmdSpawnCharacter ();
+		} else {
+			ControleNetwork.JogadoresGamePlayerManag [ControleNetwork.OtherPlayerNumber ()] = this;
 		}
 	
 	}
@@ -19,14 +21,20 @@ public class GamePlayerManager : NetworkBehaviour {
 	void Update () {
 	
 	}
-	[Command] void CmdSpawnCharacter(int playnumb){
+	[Command] void CmdSpawnCharacter(){
+		SpawnCharacter();
+	}
+
+
+
+	// Spawn Character
+	public void SpawnCharacter(){
+		int playnumb;
 		GameObject objeto;
 		PlayerManag jogador;
 		/////////// Verifica Qual o Player Manager deste Objeto \\\\\
-		if (hasAuthority)
-			jogador = ControleNetwork.meuPlayerManag;
-		else
-			jogador = ControleNetwork.parceiroPlayerManag;
+		playnumb = ControleNetwork.PlayerNumberThisObject(hasAuthority);
+		jogador = ControleNetwork.JogadoresPlayerManag[playnumb];
 		/////////////// Pega a bool armadura para verificar oq ele vai spawna \\\\\\\\\
 		if (jogador.armadura)
 			objeto = ArmaduraTeste;
@@ -38,7 +46,6 @@ public class GamePlayerManager : NetworkBehaviour {
 		NetworkServer.SpawnWithClientAuthority (objeto, gameObject);
 		SpawnPoint (objeto);
 	}
-
 
 	// Teste Spawn Point
 	void SpawnPoint(GameObject objetop){
@@ -55,6 +62,22 @@ public class GamePlayerManager : NetworkBehaviour {
 		objetop.transform.position = new Vector3 (posicao.x, posicao.y, gameObject.transform.position.z);
 		controle.RpcSpawnPos (posicao);
 		controle.Paused = false;
+	}
+
+
+	public void SwapCharacter(){
+		//////////// Seta Posições de Spawn  \\\\\\\\\\\\\\\\\\\\
+		if (hasAuthority) {
+			ControleNetwork.JogadoresPlayerManag[0].armadura = !ControleNetwork.JogadoresPlayerManag[0].armadura;
+			GameObject.Find ("SpawnP1").transform.position = ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()].transform.position;
+			NetworkServer.Destroy (ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()]);
+		} else {
+			ControleNetwork.JogadoresPlayerManag[1].armadura = !ControleNetwork.JogadoresPlayerManag[1].armadura;
+			GameObject.Find ("SpawnP2").transform.position = ControleNetwork.Jogadores [ControleNetwork.PlayerNumber].transform.position;
+			NetworkServer.Destroy (ControleNetwork.Jogadores [ControleNetwork.PlayerNumber]);
+		}
+		/////////////// Spawna \\\\\\\\\\\\\\\\\\\\\
+		SpawnCharacter();
 	}
 		
 }
