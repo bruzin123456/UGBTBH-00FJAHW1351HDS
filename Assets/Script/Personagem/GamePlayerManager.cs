@@ -16,16 +16,13 @@ public class GamePlayerManager : NetworkBehaviour {
 		}
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+
+	// \\\\\\\\\\\\\\ Função Para Chamar Spawn Character No Server \\\\\\\\\\\\\\\\\\
 	[Command] void CmdSpawnCharacter(){
 		SpawnCharacter();
 	}
-
-
+		
 
 	// Spawn Character
 	public void SpawnCharacter(){
@@ -44,10 +41,11 @@ public class GamePlayerManager : NetworkBehaviour {
 		objeto = Instantiate (objeto);
 		objeto.name = ("Player" + (playnumb + 1));
 		NetworkServer.SpawnWithClientAuthority (objeto, gameObject);
+		ControleNetwork.Jogadores [playnumb] = objeto;
 		SpawnPoint (objeto);
 	}
 
-	// Teste Spawn Point
+	//////////////// Spawn Point//\\\\\\\\\\\\\\
 	void SpawnPoint(GameObject objetop){
 		ControleBase controle = objetop.GetComponent<ControleBase> ();
 		Vector2 posicao;
@@ -63,21 +61,4 @@ public class GamePlayerManager : NetworkBehaviour {
 		controle.RpcSpawnPos (posicao);
 		controle.Paused = false;
 	}
-
-
-	public void SwapCharacter(){
-		//////////// Seta Posições de Spawn  \\\\\\\\\\\\\\\\\\\\
-		if (hasAuthority) {
-			ControleNetwork.JogadoresPlayerManag[0].armadura = !ControleNetwork.JogadoresPlayerManag[0].armadura;
-			GameObject.Find ("SpawnP1").transform.position = ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()].transform.position;
-			NetworkServer.Destroy (ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()]);
-		} else {
-			ControleNetwork.JogadoresPlayerManag[1].armadura = !ControleNetwork.JogadoresPlayerManag[1].armadura;
-			GameObject.Find ("SpawnP2").transform.position = ControleNetwork.Jogadores [ControleNetwork.PlayerNumber].transform.position;
-			NetworkServer.Destroy (ControleNetwork.Jogadores [ControleNetwork.PlayerNumber]);
-		}
-		/////////////// Spawna \\\\\\\\\\\\\\\\\\\\\
-		SpawnCharacter();
-	}
-		
 }

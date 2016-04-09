@@ -9,9 +9,9 @@ public class ControlePersonagemBeta : ControleBase {
 
 	void Start () {
 		lerpint = 0.4f;
-		SetControleNetworkJogadores ();   ///// guarda a referencia desse objeto para o ControleNetwork
 	}
 
+	// \\\\\\\\\\\\\\\\\\\\ Move O Personagem Fada \\\\\\\\\\\\\\\\\\\
 	void FixedUpdate(){
 		
 		Rigidbody2D rig2d = gameObject.GetComponent<Rigidbody2D> ();
@@ -30,9 +30,6 @@ public class ControlePersonagemBeta : ControleBase {
 
 			}
 		}
-		
-	}
-	void Update () {
 		
 	}
 }

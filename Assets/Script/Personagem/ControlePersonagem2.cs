@@ -16,7 +16,6 @@ public class ControlePersonagem2 : ControleBase {
 	void Start () {
 		lerpint = 0.6f;
 		rig2d = gameObject.GetComponent<Rigidbody2D> ();
-		SetControleNetworkJogadores ();   ///// guarda a referencia desse objeto para o ControleNetwork
 	}
 	
 	// Update é chamado frame por frame
@@ -48,6 +47,7 @@ public class ControlePersonagem2 : ControleBase {
 			CmdSetPos (rig2d.position);
 		}
 
+
 	void Pulo(){
 		contatoterrain = Physics2D.Linecast (transform.position, Verificaterrain.position, 1 << LayerMask.NameToLayer ("terrain"));
 		if (Input.GetButtonDown ("Jump") && contatoterrain) {
@@ -55,20 +55,24 @@ public class ControlePersonagem2 : ControleBase {
 		}
 	}
 
+
+	///////////  Atualiza o Lado Que O Personagem esta virado Na rede
 	void FacingSide(){
 		if (hasAuthority == true) {
 			if (FacingRightServer != FacingRightLocal)
 				CmdSetFacing (FacingRightLocal);
 		} else
 			FacingRightLocal = FacingRightServer;
-		//////////////////////////////////////////////////////
+		////////////////  Aplica A Rotação /////////////////////
 		if (FacingRightLocal == true)
 			transform.eulerAngles = new Vector2 (0,0);
 		else transform.eulerAngles = new Vector2 (0,180);
 
 	}
-
+	/////////// Muda a Variavel de Lado No Host /////////////////////////////////
 	[Command(channel = 0)] void CmdSetFacing(bool facingright){
 		FacingRightServer = facingright;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////
 }

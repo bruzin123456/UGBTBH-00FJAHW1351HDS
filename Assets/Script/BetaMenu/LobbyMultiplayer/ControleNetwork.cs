@@ -52,12 +52,32 @@ public class ControleNetwork : NetworkLobbyManager {
 		else
 			return 1;
 	}
-	// //      Numer do jogador Associado ao objeto \\\\\\\\\
+	//////////////////  Numer do jogador Associado ao objeto \\\\\\\\\//
 	public static int PlayerNumberThisObject(bool authority){
 		if (authority)
 			return PlayerNumber;
 		else
 			return OtherPlayerNumber ();
+	}
+
+
+	///////////////////////////////// Função Trocar Personagens \\\\\\\\\\\\\\\\\\\\\
+	public static void SwapCharacter(){
+		//////////// Seta Posições de Spawn  \\\\\\\\\\\\\\\\\\\\
+		ControleNetwork.JogadoresPlayerManag[0].armadura = !ControleNetwork.JogadoresPlayerManag[0].armadura;
+		GameObject.Find ("SpawnP1").transform.position = ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()].transform.position;
+		NetworkServer.Destroy (ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()]);
+		ControleNetwork.JogadoresPlayerManag[1].armadura = !ControleNetwork.JogadoresPlayerManag[1].armadura;
+		GameObject.Find ("SpawnP2").transform.position = ControleNetwork.Jogadores [ControleNetwork.PlayerNumber].transform.position;
+
+		///////////// Destroy Todos Os Jogadores \\\\\\\\\\\\\\\\\\\\
+		foreach (GameObject jogador in ControleNetwork.Jogadores) {
+			NetworkServer.Destroy (jogador);
+		}
+		/////////////// Spawna \\\\\\\\\\\\\\\\\\\\\
+		foreach(GamePlayerManager gameplaymanag in ControleNetwork.JogadoresGamePlayerManag){
+			gameplaymanag.SpawnCharacter ();
+		}
 	}
 		
 		

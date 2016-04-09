@@ -14,7 +14,7 @@ public class ControleBase : NetworkBehaviour {
 	}
 
 	/// Spawn Position \\\
-	[ClientRpc(channel = 1)] public void RpcSpawnPos(Vector2 position){
+	[ClientRpc(channel = 0)] public void RpcSpawnPos(Vector2 position){
 		gameObject.transform.position = new Vector3 (position.x, position.y, gameObject.transform.position.z);
 	}
 
@@ -24,15 +24,6 @@ public class ControleBase : NetworkBehaviour {
 		Rigidbody2D rigbody2d = gameObject.GetComponent<Rigidbody2D> ();
 		rigbody2d.position = Vector2.Lerp (rigbody2d.position, new Vector2 (pos.x, pos.y), lerpint);
 	}
-
-	protected void SetControleNetworkJogadores(){
-		if (hasAuthority) {
-			ControleNetwork.Jogadores [ControleNetwork.PlayerNumber] = gameObject;
-			Debug.Log ("Slot:" + ControleNetwork.PlayerNumber);
-		} else {
-			ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()] = gameObject;
-			Debug.Log ("Slot:" + ControleNetwork.OtherPlayerNumber ());
-		}
-	}
+		
 }
 

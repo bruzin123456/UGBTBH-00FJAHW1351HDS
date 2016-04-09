@@ -30,8 +30,7 @@ public class TrocaPersonagem : NetworkBehaviour {
 			if (isServer) { 
 				if (Trocar && ControleNetwork.Jogadores [ControleNetwork.OtherPlayerNumber ()].GetComponent<TrocaPersonagem> ().Trocar) {
 					Trocar = false;
-					foreach (GamePlayerManager jogadorManager in ControleNetwork.JogadoresGamePlayerManag)
-						jogadorManager.SwapCharacter ();				
+					ControleNetwork.SwapCharacter ();
 				}
 			}
 			////// Fim Authority \\\\\\\\\\\\\\\
